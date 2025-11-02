@@ -1,0 +1,83 @@
+.admin-container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 90px;
+  font-family: Arial, sans-serif;
+}
+
+.section {
+  margin-top: 30px;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.custom-table th,
+.custom-table td {
+  border: 1px solid #704444;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.custom-table th {
+  background-color: #797676;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.message {
+  padding: 10px;
+  background-color: #e0f7fa;
+  border: 1px solid #00acc1;
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+.role-select {
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+}
+
+.error {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+}
+
+.delete_button{
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logout {
+  background-color: #db3434;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+.user_name {
+  color: #333;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  background-color: #347cdb;
+}

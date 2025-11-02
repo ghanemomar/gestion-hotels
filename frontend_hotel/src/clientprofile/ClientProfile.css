@@ -1,0 +1,89 @@
+.client-profile {
+  padding: 90px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.profile-info {
+  background: #f7f7f7;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+
+.logout-btn, .cancel-btn {
+  background-color: #e74c3c;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-btn:hover, .cancel-btn:hover {
+  background-color: #c0392b;
+}
+
+.reservations-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reservations-table th, .reservations-table td {
+  border: 1px solid #ddd;
+  padding: 0.8rem;
+  text-align: center;
+  color: #000;
+}
+
+.reservations-table th {
+  background-color: #3498db;
+  color: white;
+}
+
+.profile-message {
+  margin-bottom: 1rem;
+  color: green;
+  font-weight: bold;
+}
+
+/* ===== Status badges ===== */
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.status-confirmed {
+  background-color: #28a745; /* Vert */
+}
+
+.status-pending {
+  background-color: #ffc107; /* Jaune */
+  color: #333;
+}
+
+.status-cancelled {
+  background-color: #dc3545; /* Rouge */
+}
+
+/* ===== Table styling ===== */
+.reservations-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.reservations-table th,
+.reservations-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.reservations-table th {
+  background-color: #f8f8f8;
+  font-weight: 600;
+}
