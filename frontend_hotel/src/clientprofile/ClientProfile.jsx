@@ -1,21 +1,16 @@
+// ClientProfile.jsx
 import React, { useEffect, useState } from "react";
 import "./ClientProfile.css";
-import {
-  getProfile,
-  getMyReservations,
-  cancelReservation,
-  logoutUser,
-} from "../api";
+import { getProfile, getMyReservations, cancelReservation, logoutUser } from "../api";
 import { useNavigate } from "react-router-dom";
 
 export default function ClientProfile() {
   const [userProfile, setUserProfile] = useState(null);
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ text: "", type: "" });
   const navigate = useNavigate();
 
-  // 🔹 Charger le profil et les réservations
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,79 +20,63 @@ export default function ClientProfile() {
         const reservationsResponse = await getMyReservations();
         setReservations(reservationsResponse.data);
       } catch (error) {
-        console.error("Erreur lors du chargement du profil :", error);
-        setMessage("❌ Impossible de charger les données.");
+        console.error("Erreur lors du chargement :", error);
+        setMessage({ text: "Impossible de charger les données.", type: "error" });
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
-  // 🔹 Annuler une réservation
   const handleCancel = async (id) => {
-    if (!window.confirm("Voulez-vous vraiment annuler cette réservation ?"))
-      return;
-
+    if (!window.confirm("Voulez-vous vraiment annuler cette réservation ?")) return;
     try {
       await cancelReservation(id);
-      setReservations((prev) =>
-        prev.map((res) =>
-          res.id === id ? { ...res, status: "annulée" } : res
-        )
+      setReservations(prev =>
+        prev.map(res => (res.id === id ? { ...res, status: "annulée" } : res))
       );
-      setMessage("✅ Réservation annulée avec succès !");
+      setMessage({ text: "Réservation annulée avec succès !", type: "success" });
     } catch (error) {
       console.error("Erreur d'annulation :", error);
-      setMessage("❌ Erreur lors de l’annulation.");
+      setMessage({ text: "Erreur lors de l’annulation.", type: "error" });
     }
   };
 
-  // 🔹 Déconnexion
   const handleLogout = async () => {
     try {
       await logoutUser();
       localStorage.removeItem("token");
-      setMessage("👋 Déconnexion réussie !");
+      setMessage({ text: "Déconnexion réussie !", type: "success" });
       navigate("/auth");
     } catch (error) {
       console.error("Erreur lors de la déconnexion :", error);
-      setMessage("❌ Impossible de se déconnecter.");
+      setMessage({ text: "Impossible de se déconnecter.", type: "error" });
     }
   };
 
-  // 🕓 Si en cours de chargement
   if (loading) return <p>Chargement du profil...</p>;
 
   return (
     <div className="client-profile">
       <h1>Mon Profil</h1>
 
-      {message && <p className="profile-message">{message}</p>}
+      {message.text && (
+        <p className={`profile-message ${message.type}`}>{message.text}</p>
+      )}
 
-      {/* Informations utilisateur */}
       {userProfile ? (
         <div className="profile-info">
-          <p>
-            <strong>Nom :</strong> {userProfile.name}
-          </p>
-          <p>
-            <strong>Email :</strong> {userProfile.email}
-          </p>
-          <p>
-            <strong>Téléphone :</strong> {userProfile.telephone || "Non fourni"}
-          </p>
+          <p><strong>Nom :</strong> {userProfile.name}</p>
+          <p><strong>Email :</strong> {userProfile.email}</p>
+          <p><strong>Téléphone :</strong> {userProfile.telephone || "Non fourni"}</p>
 
-          <button className="logout-btn" onClick={handleLogout}>
-            Déconnexion
-          </button>
+          <button className="logout-btn" onClick={handleLogout}>Déconnexion</button>
         </div>
       ) : (
         <p>Aucun profil trouvé.</p>
       )}
 
-      {/* Réservations */}
       <div className="reservations-section">
         <h2>Mes Réservations</h2>
 
@@ -114,42 +93,31 @@ export default function ClientProfile() {
               </tr>
             </thead>
             <tbody>
-              {reservations.map((res) => (
+              {reservations.map(res => (
                 <tr key={res.id}>
                   <td>{res.room?.name || "Inconnu"}</td>
                   <td>{res.room?.hotel?.name || "Non spécifié"}</td>
                   <td>{res.check_in}</td>
                   <td>{res.check_out}</td>
                   <td>
-                    <span
-                      className={`status-badge ${
-                        res.status === "confirmée"
-                          ? "status-confirmed"
-                          : res.status === "en attente"
-                          ? "status-pending"
-                          : "status-cancelled"
-                      }`}
-                    >
-                      {res.status || "Non défini"}
-                    </span>
+                    <span className={`status-badge ${
+                      res.status === "confirmée"
+                        ? "status-confirmed"
+                        : res.status === "en attente"
+                        ? "status-pending"
+                        : "status-cancelled"
+                    }`}>{res.status || "Non défini"}</span>
                   </td>
                   <td>
                     {res.status !== "annulée" && (
-                      <button
-                        className="cancel-btn"
-                        onClick={() => handleCancel(res.id)}
-                      >
-                        Annuler
-                      </button>
+                      <button className="cancel-btn" onClick={() => handleCancel(res.id)}>Annuler</button>
                     )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        ) : (
-          <p>Vous n’avez aucune réservation.</p>
-        )}
+        ) : <p>Vous n’avez aucune réservation.</p>}
       </div>
     </div>
   );

@@ -29,8 +29,9 @@ class User extends Authenticatable
     // Relations
     public function hotels()
     {
-        return $this->hasMany(Hotel::class);
+        return $this->hasMany(Hotel::class, 'user_id');
     }
+
 
     public function reservations()
     {

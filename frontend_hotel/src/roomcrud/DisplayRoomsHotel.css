@@ -1,0 +1,141 @@
+.rooms-hotel-dashboard {
+  max-width: 1100px;
+  margin: 100px ;
+  padding: 90px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+.rooms-hotel-dashboard h1 {
+  font-size: 1.8rem;
+  color: #1e40af;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Tableau */
+.rooms-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.rooms-table th,
+.rooms-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.rooms-table th {
+  background-color: #1e40af;
+  color: #fff;
+  font-weight: 600;
+}
+
+.rooms-table tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.rooms-table tbody tr:hover {
+  background-color: #e0e7ff;
+}
+
+
+
+/* Boutons Actions */
+.actions-cell button {
+  margin: 2px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+.btn-edit:hover {
+  background-color: #1e40af;
+}
+
+.btn-delete {
+  background-color: #dc2626;
+  color: #fff;
+}
+
+.btn-delete:hover {
+  background-color: #b91c1c;
+}
+
+/* Messages */
+.message {
+  text-align: center;
+  padding: 0.8rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+.message.success {
+  color: #16a34a;
+  background-color: #ecfdf5;
+}
+
+.message.error {
+  color: #dc2626;
+  background-color: #fef2f2;
+}
+
+.message.loading {
+  color: #1e40af;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .rooms-hotel-dashboard {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rooms-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .rooms-table th,
+  .rooms-table td {
+    padding: 0.5rem 0.8rem;
+  }
+
+  .rooms-hotel-dashboard h1 {
+    font-size: 1.5rem;
+  }
+}
+
+
+.create-room-btn {
+  display: inline-block;
+  margin: 15px 0;
+  padding: 10px 18px;
+  background-color: #007BFF;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.create-room-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}

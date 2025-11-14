@@ -1,7 +1,9 @@
+/* ClientProfile.css */
 .client-profile {
-  padding: 90px;
+  padding: 60px ;
   max-width: 900px;
-  margin: 0 auto;
+  margin: 60px auto;
+  font-family: Arial, sans-serif;
 }
 
 .profile-info {
@@ -18,6 +20,7 @@
   color: white;
   border-radius: 5px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 .logout-btn:hover, .cancel-btn:hover {
@@ -27,27 +30,22 @@
 .reservations-table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 20px;
 }
 
 .reservations-table th, .reservations-table td {
   border: 1px solid #ddd;
-  padding: 0.8rem;
+  padding: 12px;
   text-align: center;
-  color: #000;
 }
 
 .reservations-table th {
   background-color: #3498db;
   color: white;
+  font-weight: 600;
 }
 
-.profile-message {
-  margin-bottom: 1rem;
-  color: green;
-  font-weight: bold;
-}
-
-/* ===== Status badges ===== */
+/* Status badges */
 .status-badge {
   padding: 5px 10px;
   border-radius: 6px;
@@ -69,21 +67,20 @@
   background-color: #dc3545; /* Rouge */
 }
 
-/* ===== Table styling ===== */
-.reservations-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+/* Messages */
+.profile-message {
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-weight: bold;
 }
 
-.reservations-table th,
-.reservations-table td {
-  border: 1px solid #ddd;
-  padding: 12px;
-  text-align: center;
+.profile-message.success {
+  background-color: #d4edda;
+  color: #155724;
 }
 
-.reservations-table th {
-  background-color: #f8f8f8;
-  font-weight: 600;
+.profile-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
 }

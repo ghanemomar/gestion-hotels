@@ -1,0 +1,120 @@
+.update-room-container {
+  width: 90%;
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 70px;
+}
+
+.update-room-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.update-room-form input,
+.update-room-form textarea {
+  padding: 10px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.message-box {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.message-box.success {
+  background: #d4f8d4;
+  color: #256b25;
+  border: 1px solid #4caf50;
+}
+
+.message-box.error {
+  background: #ffe0e0;
+  color: #a30000;
+  border: 1px solid #ff4d4d;
+}
+
+.image-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.image-wrapper {
+  position: relative;
+}
+
+.image-wrapper img {
+  width: 140px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 3px 5px;
+}
+
+
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 15px;
+}
+
+.img-box {
+  position: relative;
+}
+
+.img-box img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.btn-remove {
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+  border: none;
+  background-color: #e74c3c;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-remove.selected {
+  background-color: #555;
+}
+
+.btn-primary {
+  padding: 12px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}

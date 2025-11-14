@@ -1,0 +1,105 @@
+/* 🔹 Container principal uniquement pour CreateHotel */
+.create-hotel-page {
+  max-width: 650px;
+  margin: 50px auto;
+  padding: 70px ;
+  background-color: #fdfdfd;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Titres */
+.create-hotel-page h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+/* Labels et inputs */
+.create-hotel-page label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #555;
+}
+
+.create-hotel-page input[type="text"],
+.create-hotel-page input[type="number"],
+.create-hotel-page textarea,
+.create-hotel-page input[type="file"] {
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.create-hotel-page input:focus,
+.create-hotel-page textarea:focus {
+  outline: none;
+  border-color: #007BFF;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+/* Textarea */
+.create-hotel-page textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Preview images */
+.create-hotel-page .preview-images {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.create-hotel-page .preview-images img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: transform 0.25s ease;
+}
+
+.create-hotel-page .preview-images img:hover {
+  transform: scale(1.05);
+}
+
+/* Submit button */
+.create-hotel-page .btn-submit {
+  width: 100%;
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.create-hotel-page .btn-submit:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .create-hotel-page {
+    padding: 20px;
+  }
+
+  .create-hotel-page .preview-images img {
+    width: 80px;
+    height: 80px;
+  }
+}

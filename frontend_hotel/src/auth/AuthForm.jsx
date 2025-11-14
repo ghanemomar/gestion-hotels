@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser, registerUser } from "../api"; // استدعاء functions من api.jsx
 import "./AuthForm.css";
+import { AuthContext } from "../context/AuthContext";
 
 export default function AuthForm({ setIsAuthenticated, setRole }) {
   const navigate = useNavigate();
@@ -26,27 +27,26 @@ export default function AuthForm({ setIsAuthenticated, setRole }) {
   };
 
   // submit login
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await loginUser(loginData);
-      const { user, token } = res.data;
+const { login } = useContext(AuthContext);
 
-      localStorage.setItem("token", token);
-      localStorage.setItem("role", user.role);
+const handleLogin = async (e) => {
+  e.preventDefault();
 
-      setIsAuthenticated(true);
-      setRole(user.role);
-      setMessage(`Welcome back ${user.name}`);
+  try {
+    const res = await loginUser(loginData);
+    const { token, user } = res.data;
 
-      // redirection selon le rôle
-      if (user.role === "admin") navigate("/admin");
-      else if (user.role === "hotel") navigate("/hotel/rooms");
-      else navigate("/profile");
-    } catch (err) {
-      setMessage(err.response?.data?.message || "Login failed");
-    }
-  };
+    login(token, user.role); // ⬅️ استعمال context
+
+    if (user.role === "admin") navigate("/admin-dashboard");
+    else if (user.role === "hotel") navigate("/hotel-dashboard");
+    else navigate("/profile");
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 
   // submit register
   const handleRegister = async (e) => {

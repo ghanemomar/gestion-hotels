@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { getAllReservations, assignRole, getProfile, getHotels, logoutUser, validateHotel } from "../api";
+import {
+  getAllReservations,
+  assignRole,
+  getProfile,
+  getAdminHotel,
+  logoutUser,
+  
+} from "../api";
 import axios from "axios";
 import "./AdminDashboard.css";
 import { useNavigate } from "react-router-dom";
@@ -7,11 +14,11 @@ import { useNavigate } from "react-router-dom";
 export default function AdminDashboard() {
   const [reservations, setReservations] = useState([]);
   const [users, setUsers] = useState([]);
+  const [hotels, setHotels] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
-  const [hotels, setHotels] = useState([]);
-  const [userName, setUserName] = useState(""); // ✅ correction ici
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,11 +27,12 @@ export default function AdminDashboard() {
         const res = await getProfile();
         if (res.data.role === "admin") {
           setIsAdmin(true);
-          setUserName(res.data.name); // ✅ récupération du nom
+          setUserName(res.data.name);
           fetchReservations();
           fetchUsers();
-          fetchHotels();
-
+          fetchHotels(res.data.data); // ✅ récupère tous les hôtels pour l'admin
+        } else {
+          setIsAdmin(false);
         }
       } catch (error) {
         console.error("Erreur auth:", error);
@@ -32,39 +40,44 @@ export default function AdminDashboard() {
         setLoading(false);
       }
     };
+
     checkAdmin();
   }, []);
 
+  // 🔹 Fetch hôtels (avec getAdminHotel)
   const fetchHotels = async () => {
     try {
-      const res = await getHotels();
-      setHotels(res.data.data || res.data); // ✅ supporte les 2 formats
+      const res = await getAdminHotel(); // ✅ utilisation de getAdminHotel
+      setHotels(res.data.data || res.data);
     } catch (error) {
       console.error("Erreur chargement hôtels:", error);
     }
   };
 
+  // 🔹 Fetch réservations
   const fetchReservations = async () => {
     try {
       const res = await getAllReservations();
-      setReservations(res.data);
+      setReservations(res.data.data || res.data);
     } catch (error) {
       console.error("Erreur chargement réservations:", error);
     }
   };
 
+  // 🔹 Fetch utilisateurs
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get("http://localhost:8000/api/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setUsers(res.data);
+      setUsers(res.data.data || res.data);
     } catch (error) {
       console.error("Erreur chargement utilisateurs:", error);
     }
   };
 
+  // 🔹 Changer rôle utilisateur
   const handleRoleChange = async (userId, newRole) => {
     try {
       await assignRole(userId, newRole);
@@ -76,35 +89,8 @@ export default function AdminDashboard() {
     }
   };
 
-
-
-
-// const handleToggleValidation = async (hotelId, validated) => {
-//   try {
-//     await validateHotel(hotelId, validated); // API patch avec { validated }
-    
-//     // Mise à jour directe de l'état
-//     setHotels(prevHotels =>
-//       prevHotels.map(h =>
-//         h.id === hotelId ? { ...h, validated } : h
-//       )
-//     );
-
-//     setMessage(validated 
-//       ? "✅ Hôtel validé avec succès !" 
-//       : "❌ Validation retirée avec succès !");
-//   } catch (error) {
-//     console.error("Erreur validation hôtel:", error);
-//     setMessage("❌ Impossible de changer le statut de l’hôtel.");
-//   }
-// };
-
-
-
-
-
-
-  const handleDeleteHotel = async (hotelId) => {
+  // 🔹 Supprimer hôtel
+  const handleDeleteHotelClick = async (hotelId) => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`http://localhost:8000/api/hotels/${hotelId}`, {
@@ -118,6 +104,32 @@ export default function AdminDashboard() {
     }
   };
 
+const handleToggleValidation = async (hotelId, validated) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.patch(
+      `http://localhost:8000/api/hotels/${hotelId}/validate`,
+      { validated }, // envoie true ou false
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    setHotels(prevHotels =>
+      prevHotels.map(h =>
+        h.id === hotelId ? { ...h, validated: res.data.data.validated } : h
+      )
+    );
+
+    setMessage(res.data.message);
+  } catch (error) {
+    console.error("Erreur validation hôtel:", error);
+    setMessage("❌ Impossible de changer le statut de l’hôtel.");
+  }
+};
+
+
+
+  // 🔹 Déconnexion
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -135,9 +147,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="admin-container">
-      <h2 className="user_name">
-        Bonjour  {userName}
-      </h2>
+      <h2 className="user_name">Bonjour {userName}</h2>
       <h2>
         Tableau de bord administrateur{" "}
         <button className="logout" onClick={handleLogout}>
@@ -167,10 +177,10 @@ export default function AdminDashboard() {
                 <tr key={r.id}>
                   <td>{r.id}</td>
                   <td>{r.user?.name || "N/A"}</td>
-                  <td>{r.hotel?.name || "N/A"}</td>
-                  <td>{r.room?.title || "N/A"}</td>
+                  <td>{r.room?.hotel?.name || "N/A"}</td>
+                  <td>{r.room?.name || "N/A"}</td>
                   <td>{r.status}</td>
-                  <td>{r.created_at}</td>
+                  <td>{new Date(r.created_at).toLocaleDateString('fr-FR')}</td>
                 </tr>
               ))
             ) : (
@@ -238,6 +248,7 @@ export default function AdminDashboard() {
               <th>ID</th>
               <th>Nom</th>
               <th>Ville</th>
+              <th>Validé</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -248,27 +259,30 @@ export default function AdminDashboard() {
                   <td>{h.id}</td>
                   <td>{h.name}</td>
                   <td>{h.city}</td>
-                       <td>
-                        {/* <button
-                          className={h.validated ? "unvalidate_button" : "validate_button"}
-                          onClick={() => handleToggleValidation(h.id, !h.validated)}
-                        >
-                          {h.validated ? " ✅ Valider  " : " ❌ Ne pas valider"}
-                        </button> */}
-                        <button
-                          className="delete_button"
-                          onClick={() => handleDeleteHotel(h.id)}
-                        >
-                          Supprimer
-                        </button>
-                      </td>
-
-
+                  <td>{h.validated ? "✅ Oui" : "❌ Non"}</td>
+                  <td>
+                    <select
+                      value={h.validated ? "1" : "0"} // 1 = validé, 0 = non validé
+                      onChange={(e) =>
+                        handleToggleValidation(h.id, e.target.value === "1")
+                      }
+                      className="validate-select"
+                    >
+                      <option value="1">✅ Validé</option>
+                      <option value="0">❌ Non validé</option>
+                    </select>
+                    <button
+                      className="delete_button"
+                      onClick={() => handleDeleteHotelClick(h.id)}
+                    >
+                      Supprimer
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="center-text">
+                <td colSpan="5" className="center-text">
                   Aucun hôtel trouvé.
                 </td>
               </tr>

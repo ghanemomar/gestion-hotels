@@ -1,0 +1,24 @@
+.about {
+  height: 100vh; /* كامل الشاشة */
+  background-image: url('/public/images/about.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* هذا باش الصورة تبقى ثابتة */
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+}
+
+.about-content {
+  max-height: 80vh; /* ارتفاع المحتوى */
+  overflow-y: auto; /* scroll إذا المحتوى طويل */
+  background: rgba(0, 0, 0, 0.6); /* overlay semi-transparent */
+  color: white;
+  padding: 60px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+

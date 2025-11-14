@@ -61,30 +61,30 @@ class ReservationController extends Controller
 
     // 📌 Admin / hotel kay9adro yconfirmiw wla yannulow
     public function updateStatus(Request $request, Reservation $reservation)
-    {
-        $request->validate([
-            'status' => 'required|in:pending,confirmed,cancelled'
-        ]);
+{
+    $request->validate([
+        'status' => 'required|in:pending,confirmed,cancelled'
+    ]);
 
-        $user = Auth::user();
+    $user = Auth::user();
 
-        // Si l'utilisateur est hotel
-        if ($user->role === 'hotel') {
-            // Vérifier que la réservation appartient à son hôtel
-            if ($reservation->hotel_id !== $user->hotel->id) {
-                return response()->json(['message' => 'Unauthorized'], 403);
-            }
+    if ($user->role === 'hotel') {
+        $hotelIds = $user->hotels->pluck('id')->toArray();
+
+        if (!in_array($reservation->hotel_id, $hotelIds)) {
+            return response()->json(['message' => 'Unauthorized'], 403);
         }
-
-        // Admin peut tout modifier
-        $reservation->status = $request->status;
-        $reservation->save();
-
-        return response()->json([
-            'message' => 'Reservation status updated',
-            'reservation' => $reservation
-        ]);
     }
+
+    $reservation->status = $request->status;
+    $reservation->save();
+
+    return response()->json([
+        'message' => 'Reservation status updated',
+        'reservation' => $reservation
+    ]);
+}
+
 
     // 📌 Admin kaychouf ga3 reservations
     public function index()
@@ -115,6 +115,41 @@ class ReservationController extends Controller
         return response()->json(['message' => 'Reservation cancelled']);
     }
 
+    
+ public function hotelReservations(Request $request)
+{
+    // Récupérer tous les hôtels de l’utilisateur connecté
+    $hotels = $request->user()->hotels;
+
+    if ($hotels->isEmpty()) {
+        return response()->json(['data' => []]);
+    }
+
+    // Extraire les IDs des hôtels
+    $hotelIds = $hotels->pluck('id');
+
+    // Récupérer les réservations liées à ces hôtels
+    $reservations = Reservation::with(['user', 'room', 'hotel'])
+        ->whereIn('hotel_id', $hotelIds)
+        ->get();
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $reservations
+    ]);
+}
+
+public function deleteReservation(Reservation $reservation)
+{
+    $user = Auth::user();
+
+    if ($user->role === 'admin' || ($user->role === 'hotel' && $user->hotels->pluck('id')->contains($reservation->hotel_id))) {
+        $reservation->delete();
+        return response()->json(['message' => 'Reservation deleted successfully']);
+    }
+
+    return response()->json(['message' => 'Unauthorized'], 403);
 
 
+}
 }

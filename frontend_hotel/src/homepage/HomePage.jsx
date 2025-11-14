@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getHotels } from "../api";
 import "./HomePage.css";
-import CreateHotel from "../CreateHotel";
 import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
@@ -124,7 +123,7 @@ export default function HomePage() {
                       <p>
                         <strong>Address:</strong> {hotel.address}
                       </p>
-                      <button  className="view-rooms-button btn btn-primary" onClick={() => handleViewRooms(hotel.id)}>
+                      <button  className="view-rooms-button" onClick={() => handleViewRooms(hotel.id)}>
                         View Rooms
                       </button>
                     </div>
@@ -141,7 +140,6 @@ export default function HomePage() {
         )}
       </div>
 
-      <CreateHotel />
     </div>
   );
 }

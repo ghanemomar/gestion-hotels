@@ -192,6 +192,10 @@ hr {
   margin-top: auto; /* Push button to the bottom */
 }
 
+.view-rooms-button:hover {
+  background-color: #b07e34;
+}
+
 
 
 /* ---- Section filtre ---- */

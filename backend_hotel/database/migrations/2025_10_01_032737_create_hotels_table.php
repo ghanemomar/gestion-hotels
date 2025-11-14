@@ -20,8 +20,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('telephone')->nullable();
             $table->json('image')->nullable();
-            $table->float('latitude')->nullable();
-            $table->float('longitude')->nullable();
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
+
             $table->boolean('validated')->default(false);
             $table->timestamps();
         });

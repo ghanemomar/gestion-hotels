@@ -1,110 +1,40 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import API from "../api";
+import React, { useContext } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import "./Navbar.css";
 
-const Navbar = () => {
-  const navigate = useNavigate();
+export default function Navbar() {
+  const { isAuthenticated, role,  } = useContext(AuthContext);
   const location = useLocation();
-  const [role, setRole] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
-
-  useEffect(() => {
-    const fetchRole = async () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const res = await API.get("/profile");
-          setRole(res.data.role);
-        } catch (err) {
-          console.error("Erreur récupération rôle:", err);
-          localStorage.removeItem("token");
-          setIsAuthenticated(false);
-          setRole(null);
-        }
-      }
-    };
-    fetchRole();
-  }, [isAuthenticated]);
-
-  const handleNavigation = (path, e) => {
-    e.preventDefault();
-    navigate(path);
-  };
 
   return (
     <header className="header">
-      <a href="/" onClick={(e) => handleNavigation("/", e)} className="logo">
-        My Hotel
-      </a>
+      <Link to="/" className="logo">My Hotel</Link>
 
       <nav className="navbar">
-        <a
-          href="/"
-          onClick={(e) => handleNavigation("/", e)}
-          className={location.pathname === "/" ? "active" : ""}
-        >
-          Home
-        </a>
-        <a
-          href="/rooms"
-          onClick={(e) => handleNavigation("/rooms", e)}
-          className={location.pathname === "/rooms" ? "active" : ""}
-        >
-          Best Rooms
-        </a>
-        <a
-          href="/about"
-          onClick={(e) => handleNavigation("/about", e)}
-          className={location.pathname === "/about" ? "active" : ""}
-        >
-          About
-        </a>
+        <Link to="/" className={location.pathname === "/" ? "active" : ""}>Home</Link>
+        <Link to="/rooms" className={location.pathname === "/rooms" ? "active" : ""}>Best Rooms</Link>
+        <Link to="/about" className={location.pathname === "/about" ? "active" : ""}>About</Link>
 
         {isAuthenticated ? (
           <>
             {role === "admin" && (
-              <a
-                href="/admin-dashboard"
-                onClick={(e) => handleNavigation("/admin-dashboard", e)}
-                className={location.pathname === "/admin-dashboard" ? "active" : ""}
-              >
-                Admin_Dashboard
-              </a>
+              <Link to="/admin-dashboard">Admin Dashboard</Link>
             )}
 
             {role === "hotel" && (
-              <a
-                href="/hotel-dashboard"
-                onClick={(e) => handleNavigation("/hotel-dashboard", e)}
-                className={location.pathname === "/hotel-dashboard" ? "active" : ""}
-              >
-                Hotel_Dashboard
-              </a>
+              <Link to="/hotel-dashboard">Hotel Dashboard</Link>
             )}
 
-            {role !== "admin" && role !== "hotel" && (
-              <a
-                href="/profile"
-                onClick={(e) => handleNavigation("/profile", e)}
-                className={location.pathname === "/profile" ? "active" : ""}
-              >
-                Profile
-              </a>
+            {role === "user" && (
+              <Link to="/profile">Profile</Link>
             )}
+
           </>
         ) : (
-          <a
-            href="/auth"
-            onClick={(e) => handleNavigation("/auth", e)}
-            className={location.pathname === "/auth" ? "active" : ""}
-          >
-            Login
-          </a>
+          <Link to="/auth">Login</Link>
         )}
       </nav>
     </header>
   );
-};
-
-export default Navbar;
+}
