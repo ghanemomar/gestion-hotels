@@ -59,7 +59,7 @@ class ReservationController extends Controller
         return response()->json($reservations);
     }
 
-    // 📌 Admin / hotel kay9adro yconfirmiw wla yannulow
+    // 📌  hotel kay9adro yconfirmiw wla yannulow
     public function updateStatus(Request $request, Reservation $reservation)
 {
     $request->validate([
@@ -153,3 +153,4 @@ public function deleteReservation(Reservation $reservation)
 
 }
 }
+ 

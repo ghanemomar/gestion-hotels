@@ -140,7 +140,7 @@ public function update(Request $request, Room $room)
         'data' => $room
     ]);
 }
-
+ 
 
 
 

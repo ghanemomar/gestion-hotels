@@ -57,6 +57,8 @@ Route::middleware(['auth:sanctum', 'role:hotel,admin'])->group(function () {
     Route::delete('/reservations/{reservation}', [ReservationController::class, 'deleteReservation']);
     //get rooms of hotel owner
     Route::get('/hotel/rooms', [RoomController::class, 'hotelRooms']);
+    //hotels dyal wahd l'user role:hotel
+    Route::get('/my-hotels', [HotelController::class, 'myHotels']);
 });
 
 /*
@@ -84,7 +86,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/my-reservations', [ReservationController::class, 'myReservations']);
     Route::patch('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel']);
     
-    //hotels dyal wahd l'user role:hotel
-    Route::get('/my-hotels', [HotelController::class, 'myHotels']);
+    
 
 });

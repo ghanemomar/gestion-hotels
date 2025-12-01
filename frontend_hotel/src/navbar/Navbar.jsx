@@ -14,7 +14,7 @@ export default function Navbar() {
       <nav className="navbar">
         <Link to="/" className={location.pathname === "/" ? "active" : ""}>Home</Link>
         <Link to="/rooms" className={location.pathname === "/rooms" ? "active" : ""}>Best Rooms</Link>
-        <Link to="/about" className={location.pathname === "/about" ? "active" : ""}>About</Link>
+        {/* <Link to="/about" className={location.pathname === "/about" ? "active" : ""}>About</Link> */}
 
         {isAuthenticated ? (
           <>
